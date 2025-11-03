@@ -38,6 +38,18 @@ export const getBlogPostById = async (req, res) => {
   }
 };
 
+// GET by STATUS
+
+export const getBlogPostByStatus = async (req, res) => {
+    try{
+        const { status } = req.params;
+        const posts = await BlogPost.find({ status });
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // PUT
 export const updateBlogPost = async (req, res) => {
   if (req.user?.role === 'demo') return res.status(403).json({ msg: 'Lecture seule pour demo' });
