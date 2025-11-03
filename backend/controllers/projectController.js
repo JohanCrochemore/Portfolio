@@ -16,11 +16,7 @@ export const createProject = async (req, res) => {
 // GET all
 export const getAllProjects = async (req, res) => {
   try {
-    const filter = {};
-    if (req.query.public) filter.isPublic = req.query.public === 'true';
-    if (req.query.status) filter.status = req.query.status;
-
-    const projects = await Project.find(filter).sort({ createdAt: -1 });
+   const projects = await Project.find({}).sort({ createdAt: -1 });
     res.json(projects);
   } catch (err) {
     res.status(500).json({ error: err.message });

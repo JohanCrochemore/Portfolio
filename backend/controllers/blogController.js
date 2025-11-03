@@ -16,10 +16,6 @@ export const createBlogPost = async (req, res) => {
 // GET all
 export const getAllBlogPosts = async (req, res) => {
   try {
-    const filter = {};
-    if (req.query.projectId) filter.project = req.query.projectId;
-    if (req.query.status) filter.status = req.query.status;
-
     const posts = await BlogPost.find(filter).sort({ createdAt: -1 });
     res.json(posts);
   } catch (err) {

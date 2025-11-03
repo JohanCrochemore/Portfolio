@@ -10,10 +10,10 @@ import {
 
 const router = express.Router();
 
-// CRUD BlogPosts
+// CRUD Posts
+router.get('/status/:status', getBlogPostByStatus);
 router.get('/', getAllBlogPosts);
 router.get('/:id', getBlogPostById);
-router.get('/status/:status');
 router.post('/', createBlogPost);
 router.put('/:id', updateBlogPost);
 router.delete('/:id', deleteBlogPost);

@@ -44,7 +44,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6908b040469c98827531435e"
+									"value": "6908b8e0c1c4de3876993229"
 								}
 							]
 						}
@@ -379,25 +379,8 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "6908b040469c98827531435e"
+							"value": "6908b8e0c1c4de3876993229"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{json_url}}/posts",
-					"host": [
-						"{{json_url}}"
-					],
-					"path": [
-						"posts"
 					]
 				}
 			},
