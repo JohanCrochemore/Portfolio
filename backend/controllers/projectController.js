@@ -38,6 +38,18 @@ export const getProjectById = async (req, res) => {
   }
 };
 
+// GET by VISIBILITY
+export const getProjectsByVisibility = async (req, res) => {
+  try {
+    const { visibility } = req.params;
+    const projects = await Project.find({ visibility });
+    res.json(projects);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 // PUT
 export const updateProject = async (req, res) => {
   if (req.user?.role === 'demo') return res.status(403).json({ msg: 'Lecture seule pour demo' });
