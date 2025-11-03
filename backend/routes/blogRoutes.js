@@ -1,0 +1,19 @@
+import express from 'express';
+import {
+  createBlogPost,
+  getAllBlogPosts,
+  getBlogPostById,
+  updateBlogPost,
+  deleteBlogPost
+} from '../controllers/blogController.js';
+
+const router = express.Router();
+
+// CRUD BlogPosts
+router.get('/', getAllBlogPosts);
+router.get('/:id', getBlogPostById);
+router.post('/', createBlogPost);
+router.put('/:id', updateBlogPost);
+router.delete('/:id', deleteBlogPost);
+
+export default router;
