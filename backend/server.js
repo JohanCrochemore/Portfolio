@@ -1,6 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 
+import User from './models/User.js';
+import Project from './models/Project.js';
+import BlogPost from './models/BlogPost.js';
+
 const app = express();
 const port = process.env.PORT || 5000;
 const mongoURI = process.env.MONGO_URI;

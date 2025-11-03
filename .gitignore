@@ -40,3 +40,7 @@ Thumbs.db
 
 # Coverage reports
 coverage/
+
+# Tests
+
+backend/test/
