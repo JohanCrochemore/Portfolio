@@ -125,6 +125,51 @@
 					"response": []
 				},
 				{
+					"name": "GetProjectByVisibility",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/projects/visibility/:visibility",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"projects",
+								"visibility",
+								":visibility"
+							],
+							"variable": [
+								{
+									"key": "visibility",
+									"value": "public"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProjectAccueil",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/projects/accueil",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"projects",
+								"accueil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "CreateProject",
 					"request": {
 						"method": "POST",
@@ -234,6 +279,32 @@
 					"response": []
 				},
 				{
+					"name": "GetAllBlogsByStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/blogposts/status/:status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"blogposts",
+								"status",
+								":status"
+							],
+							"variable": [
+								{
+									"key": "status",
+									"value": "draft"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetBlogPostById",
 					"request": {
 						"method": "GET",
@@ -255,6 +326,14 @@
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetLatest",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				},
@@ -345,46 +424,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "GetUserById",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/api/users/:id",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "6908b8e0c1c4de3876993229"
-						}
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [
