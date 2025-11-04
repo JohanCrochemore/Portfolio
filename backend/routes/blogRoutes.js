@@ -4,6 +4,7 @@ import {
   getAllBlogPosts,
   getBlogPostById,
   getBlogPostByStatus,
+  getLatestPosts,
   updateBlogPost,
   deleteBlogPost
 } from '../controllers/blogController.js';
@@ -14,6 +15,7 @@ const router = express.Router();
 router.get('/status/:status', getBlogPostByStatus);
 router.get('/', getAllBlogPosts);
 router.get('/:id', getBlogPostById);
+router.get('/latest',getLatestPosts)
 router.post('/', createBlogPost);
 router.put('/:id', updateBlogPost);
 router.delete('/:id', deleteBlogPost);

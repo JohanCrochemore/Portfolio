@@ -46,6 +46,20 @@ export const getBlogPostByStatus = async (req, res) => {
     }
 };
 
+// GET latest post
+
+export const getLatestPosts = async (req, res) => {
+  try{
+    const posts = await BlogPost.find({ status: "published" })
+      .sort({ createdAt: -1 })
+      .limit(3);
+    res.json(posts);
+  } catch (error)
+  {
+    res.status(500).json({ message: error.message })
+  }
+};
+
 // PUT
 export const updateBlogPost = async (req, res) => {
   if (req.user?.role === 'demo') return res.status(403).json({ msg: 'Lecture seule pour demo' });
