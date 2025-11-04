@@ -45,6 +45,17 @@ export const getProjectsByVisibility = async (req, res) => {
   }
 };
 
+// GET 
+export const getProjectsAccueil = async (req, res) => {
+  try {
+    const projects = await Project.find({ isAccueil: true })
+      .sort({ createdAt: -1 });
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 // PUT
 export const updateProject = async (req, res) => {

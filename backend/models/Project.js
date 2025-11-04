@@ -11,7 +11,7 @@ const ProjectSchema = new mongoose.Schema({
     website: { type: String },
     docs: [{ type: String }]
   },
-  status: { type: String, enum: ['in_progress', 'finished', 'published'], default: 'in_progress' },
+  isAccueil: { type: Boolean, default: false },
   visibility: { type: String, enum: ['public', 'private'], default: 'public' },
   relatedBlogPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'BlogPost' }]
 }, { timestamps: true });
