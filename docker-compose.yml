@@ -18,7 +18,7 @@ services:
       - ./backend/.env
     depends_on:
       - mongo
-    command: sh -c "node seedUser.js && npm run start"
+    command: sh -c "node seedDatas.js && npm run start"
 
   frontend:
     build: ./frontend

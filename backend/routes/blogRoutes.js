@@ -14,8 +14,8 @@ const router = express.Router();
 // CRUD Posts
 router.get('/status/:status', getBlogPostByStatus);
 router.get('/', getAllBlogPosts);
-router.get('/:id', getBlogPostById);
 router.get('/latest',getLatestPosts)
+router.get('/:id', getBlogPostById);
 router.post('/', createBlogPost);
 router.put('/:id', updateBlogPost);
 router.delete('/:id', deleteBlogPost);

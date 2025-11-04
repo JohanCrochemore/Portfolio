@@ -12,4 +12,4 @@ RUN chmod +x ./wait-for-mongo.sh
 EXPOSE 5000
 
 # Seed et start après MongoDB ready
-CMD ["sh", "-c", "./wait-for-mongo.sh mongo node seedUser.js && npm run start"]
+CMD ["sh", "-c", "./wait-for-mongo.sh mongo node seedDatas.js && npm run start"]

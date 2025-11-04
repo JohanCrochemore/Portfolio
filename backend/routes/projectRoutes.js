@@ -14,8 +14,8 @@ const router = express.Router();
 // CRUD Projects
 router.get("/visibility/:visibility", getProjectsByVisibility);
 router.get('/', getAllProjects);
-router.get('/:id', getProjectById);
 router.get('/accueil',getProjectsAccueil)
+router.get('/:id', getProjectById);
 router.post('/', createProject);
 router.put('/:id', updateProject);
 router.delete('/:id', deleteProject);
