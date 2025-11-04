@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
 
@@ -10,15 +9,17 @@ const seedUsers = async () => {
 
     const users = [
       {
-        name: "Johan Dev",
+        lastName: "Dev",
+        firstName:'Johan',
         email: "johan@example.com",
-        password: await bcrypt.hash("admin123", 10),
+        password: "admin123",
         role: "admin",
       },
       {
-        name: "Demo User",
+        lastName: "Demo",
+        firstName:'User',
         email: "demo@example.com",
-        password: await bcrypt.hash("demo123", 10),
+        password: "demo123",
         role: "demo",
       },
     ];

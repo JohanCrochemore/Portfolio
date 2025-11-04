@@ -2,8 +2,10 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },          // Nom complet
+  lastName: { type: String, required: true },
+  firstName: { type: String },          
   email: { type: String, required: true, unique: true },
+  password:{ type: String, required: true },
   role: { type: String, enum: ['admin', 'demo'], default: 'demo' },
   profileDescription: { type: String },
   cvLink: { type: String },                        // URL vers le CV
