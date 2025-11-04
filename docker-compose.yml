@@ -19,15 +19,22 @@ services:
     depends_on:
       - mongo
     command: sh -c "node seedDatas.js && npm run start"
+  
 
   frontend:
     build: ./frontend
     container_name: frontend
     restart: always
     ports:
-      - "3000:80"
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app            # Monte ton code local dans le conteneur
+      - /app/node_modules          # Monte node_modules séparément pour éviter de les écraser
+    environment:
+      - CHOKIDAR_USEPOLLING=true   # Important sur Windows / WSL
     depends_on:
       - backend
+
 
 volumes:
   mongo-data:

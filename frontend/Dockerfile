@@ -1,11 +1,13 @@
-FROM node:20-alpine AS build
+FROM node:20-alpine
+
 WORKDIR /app
+
+# Copier uniquement package.json pour installer les dépendances
 COPY package*.json ./
 RUN npm install
-COPY . .
-RUN npm run build
 
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Exposer le port de développement
+EXPOSE 3000
+
+# Lancer le serveur de dev
+CMD ["npm", "start"]
