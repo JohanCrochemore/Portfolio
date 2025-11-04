@@ -426,47 +426,6 @@
 			]
 		},
 		{
-			"name": "Profile",
-			"item": [
-				{
-					"name": "GetProfile",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/profile",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ModifyProfile",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/profile",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Auth",
 			"request": {
 				"method": "GET",
