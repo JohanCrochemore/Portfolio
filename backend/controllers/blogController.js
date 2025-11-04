@@ -16,7 +16,7 @@ export const createBlogPost = async (req, res) => {
 // GET all
 export const getAllBlogPosts = async (req, res) => {
   try {
-    const posts = await BlogPost.find(filter).sort({ createdAt: -1 });
+    const posts = await BlogPost.find({}).sort({ createdAt: -1 });
     res.json(posts);
   } catch (err) {
     res.status(500).json({ error: err.message });

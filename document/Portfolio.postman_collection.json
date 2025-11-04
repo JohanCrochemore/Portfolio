@@ -424,8 +424,26 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Auth",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -457,6 +475,10 @@
 		},
 		{
 			"key": "json_url",
+			"value": ""
+		},
+		{
+			"key": "token",
 			"value": ""
 		}
 	]

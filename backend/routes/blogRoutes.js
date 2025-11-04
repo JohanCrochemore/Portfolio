@@ -1,4 +1,7 @@
 import express from 'express';
+import { protect, authorize } from "../middlewares/authMiddleware.js";
+
+
 import {
   createBlogPost,
   getAllBlogPosts,
@@ -16,8 +19,8 @@ router.get('/status/:status', getBlogPostByStatus);
 router.get('/', getAllBlogPosts);
 router.get('/latest',getLatestPosts)
 router.get('/:id', getBlogPostById);
-router.post('/', createBlogPost);
-router.put('/:id', updateBlogPost);
-router.delete('/:id', deleteBlogPost);
+router.post('/',protect, authorize(["admin"]), createBlogPost);
+router.put('/:id',protect, authorize(["admin"]), updateBlogPost);
+router.delete('/:id',protect, authorize(["admin"]), deleteBlogPost);
 
 export default router;
