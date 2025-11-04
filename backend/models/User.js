@@ -2,14 +2,10 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
-  lastName: { type: String, required: true },
-  firstName: { type: String },          
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password:{ type: String, required: true },
-  role: { type: String, enum: ['admin', 'demo'], default: 'demo' },
-  profileDescription: { type: String },
-  cvLink: { type: String },                        // URL vers le CV
-  skills: [{ type: String }],                      // Liste de compétences
+  role: { type: String, enum: ['admin', 'demo'], default: 'demo' }
 }, { timestamps: true });                           // createdAt / updatedAt
 
 // Middleware pour hasher le mot de passe avant save
