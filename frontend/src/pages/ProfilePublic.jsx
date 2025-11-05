@@ -6,7 +6,7 @@ export default function ProfilePublic() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
 const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
@@ -30,7 +30,7 @@ const navigate = useNavigate();
   if (loading) return <p>Chargement du profil...</p>;
   if (error) return <p>{error}</p>;
   if (!profile) return <p>Aucun profil disponible</p>;
-
+  console.log(profile);
   return (
     <div style={{ maxWidth: 700, margin: "0 auto", padding: 16 }}>
         <div style={{ textAlign: "right", marginBottom: 16 }}>
@@ -59,7 +59,7 @@ const navigate = useNavigate();
       </p>
       {profile.cvLink && (
         <p>
-          <a href={profile.cvLink} target="_blank" rel="noreferrer">
+          <a href={`${API_URL}${profile.cvLink}`} target="_blank" rel="noreferrer">
             Voir CV
           </a>
         </p>
