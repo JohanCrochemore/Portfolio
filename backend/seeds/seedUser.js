@@ -9,15 +9,13 @@ const seedUsers = async () => {
 
     const users = [
       {
-        lastName: "Dev",
-        firstName:'Johan',
+        name: "Dev",       
         email: "johan@example.com",
         password: "admin123",
         role: "admin",
       },
       {
-        lastName: "Demo",
-        firstName:'User',
+        name: "Demo",
         email: "demo@example.com",
         password: "demo123",
         role: "demo",
