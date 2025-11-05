@@ -20,7 +20,8 @@ export default function ProfileAdmin() {
     githubLink: "",
     linkedinLink: "",
   };
-
+    const API_URL = process.env.REACT_APP_API_URL;
+  
     const handleLogout = () => {
         logout();
         navigate("/"); // redirige vers la landing page
@@ -41,7 +42,7 @@ export default function ProfileAdmin() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/profile");
+        const res = await fetch(`${API_URL}/api/profile`);
         if (res.status === 404) setProfile(emptyProfile);
         else {
           const data = await res.json();
@@ -68,7 +69,7 @@ export default function ProfileAdmin() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("http://localhost:5000/api/upload", {
+    const res = await fetch(`${API_URL}/api/upload`, {
       method: "POST",
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -117,7 +118,7 @@ export default function ProfileAdmin() {
 
       const payload = { ...profile, picture: pictureUrl, cvLink: cvUrl };
 
-      const res = await fetch("http://localhost:5000/api/profile", {
+      const res = await fetch(`${API_URL}/api/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +173,7 @@ export default function ProfileAdmin() {
           />
         </label>
         {profile.picture && typeof profile.picture === "string" && (
-          <img src={`http://localhost:5000${profile.picture}`} alt="Profil" width={230} height={330} />
+          <img src={`${API_URL}${profile.picture}`} alt="Profil" width={230} height={330} />
         )}
 
         <label> Date de naissance <input type="date" name="birthDate" value={profile.birthDate ? profile.birthDate.slice(0, 10) : ""} onChange={handleChange} disabled={role !== "admin"} /> </label> 
@@ -184,7 +185,7 @@ export default function ProfileAdmin() {
           <input type="file" onChange={(e) => setProfile((p) => ({ ...p, cvLink: e.target.files[0] }))} disabled={role !== "admin"} />
         </label>
         {profile.cvLink && typeof profile.cvLink === "string" && (
-          <a href={`http://localhost:5000${profile.cvLink}`} target="_blank" rel="noreferrer">
+          <a href={`${API_URL}${profile.cvLink}`} target="_blank" rel="noreferrer">
             Voir CV
           </a>
         )}
@@ -195,7 +196,7 @@ export default function ProfileAdmin() {
             {profile.skills.map((s, i) => (
               <li key={i}>
                 {s.name} ({s.level}){" "}
-                {s.imageUrl && <img src={`http://localhost:5000${s.imageUrl}`} alt={s.name} width={80} />} 
+                {s.imageUrl && <img src={`${API_URL}${s.imageUrl}`} alt={s.name} width={80} />} 
                 {role === "admin" && <button type="button" onClick={() => handleRemoveSkill(i)}>Supprimer</button>}
               </li>
             ))}

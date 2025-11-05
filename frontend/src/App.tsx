@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProfileAdmin from "./pages/ProfileAdmin";
+import ProfilePublic from "./pages/ProfilePublic";
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          <Route path="/profile" element={<ProfilePublic />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/admin"
@@ -27,7 +29,7 @@ function App() {
                 <ProfileAdmin />
               </ProtectedRoute>
             }/>
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<ProfilePublic />} />
         </Routes>
       </Router>
     </AuthProvider>
