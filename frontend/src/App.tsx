@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
-import Admin from "./pages/Admin";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/navigation/ProtectedRoute";
 import ProfileAdmin from "./pages/ProfileAdmin";
 import ProfilePublic from "./pages/ProfilePublic";
 
@@ -13,15 +12,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/profile" element={<ProfilePublic />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/login" element={<Login />} />         
           <Route
             path="/admin/profile"
             element={
