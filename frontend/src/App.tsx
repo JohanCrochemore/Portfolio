@@ -3,6 +3,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProfileAdmin from "./pages/ProfileAdmin";
+
 
 function App() {
   return (
@@ -18,6 +20,13 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/profile"
+            element={
+              <ProtectedRoute>
+                <ProfileAdmin />
+              </ProtectedRoute>
+            }/>
           <Route path="*" element={<Login />} />
         </Routes>
       </Router>

@@ -21,9 +21,9 @@ const Login = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
+        console.log("data",data);
         login(data.token, data.role);
-        navigate("/admin"); 
+        navigate("/admin/profile"); 
       } else {
         setError(data.error || "Login failed");
       }
