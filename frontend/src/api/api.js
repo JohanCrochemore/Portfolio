@@ -1,4 +1,4 @@
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 export const useApi = () => {
   const { token } = useAuth();
