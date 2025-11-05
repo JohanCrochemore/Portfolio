@@ -12,8 +12,9 @@ const ProfileSchema = new mongoose.Schema({
     cvLink: { type: String },                        // URL vers le CV
     skills: [
         {
-            name : {type: String},
-            level : {type: String, enum :['low','medium','experienced','expert'], default : 'low'}
+            name: { type: String },
+            level: { type: String, enum: ["low", "medium", "experienced", "expert"], default: "low" },
+            imageUrl: { type: String } // URL ou chemin du fichier image
         }
     ],
     githubLink: { type: String },

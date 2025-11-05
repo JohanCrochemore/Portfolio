@@ -1,9 +1,11 @@
 // src/pages/ProfileAdmin.jsx
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileAdmin() {
-  const { token, role } = useAuth();
+  const { token, role, logout } = useAuth();
+  const navigate = useNavigate();
 
   const emptyProfile = {
     lastName: "",
@@ -11,13 +13,18 @@ export default function ProfileAdmin() {
     birthDate: "",
     phoneNumber: "",
     email: "",
-    picture: "",
+    picture: "", // URL de l'image profil
     profileDescription: "",
-    cvLink: "",
-    skills: [], // {name, level}
+    cvLink: "", // URL du CV
+    skills: [], // {name, level, imageUrl}
     githubLink: "",
     linkedinLink: "",
   };
+
+    const handleLogout = () => {
+        logout();
+        navigate("/"); // redirige vers la landing page
+    };
 
   const skillLevels = ["low", "medium", "experienced", "expert"];
 
@@ -26,17 +33,17 @@ export default function ProfileAdmin() {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  // Gestion modal ajout compétence
+  // Modal pour ajout compétence
   const [showSkillModal, setShowSkillModal] = useState(false);
-  const [newSkill, setNewSkill] = useState({ name: "", level: "low" });
+  const [newSkill, setNewSkill] = useState({ name: "", level: "low", imageFile: null });
 
+  // fetch profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/profile");
-        if (res.status === 404) {
-          setProfile(emptyProfile);
-        } else {
+        if (res.status === 404) setProfile(emptyProfile);
+        else {
           const data = await res.json();
           if (data) setProfile({ ...emptyProfile, ...data });
         }
@@ -55,10 +62,37 @@ export default function ProfileAdmin() {
     setProfile((p) => ({ ...p, [name]: value }));
   };
 
-  const handleAddSkill = () => {
+  // Upload fichier (photo ou CV ou compétence)
+  const handleFileUpload = async (file, type) => {
+    if (!file) return "";
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("http://localhost:5000/api/upload", {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
+
+    const data = await res.json();
+    return data.url || "";
+  };
+
+  const handleAddSkill = async () => {
     if (!newSkill.name.trim()) return;
-    setProfile((p) => ({ ...p, skills: [...p.skills, newSkill] }));
-    setNewSkill({ name: "", level: "low" });
+
+    // upload image si présente
+    let imageUrl = "";
+    if (newSkill.imageFile) imageUrl = await handleFileUpload(newSkill.imageFile, "picture");
+
+    setProfile((p) => ({
+      ...p,
+      skills: [...p.skills, { ...newSkill, imageUrl }],
+    }));
+
+    setNewSkill({ name: "", level: "low", imageFile: null });
     setShowSkillModal(false);
   };
 
@@ -72,15 +106,26 @@ export default function ProfileAdmin() {
   const handleSave = async () => {
     setMessage(null);
     setError(null);
+
     try {
+      // upload photo et CV si nécessaire
+      let pictureUrl = profile.picture;
+      if (profile.picture instanceof File) pictureUrl = await handleFileUpload(profile.picture, "picture");
+
+      let cvUrl = profile.cvLink;
+      if (profile.cvLink instanceof File) cvUrl = await handleFileUpload(profile.cvLink, "document");
+
+      const payload = { ...profile, picture: pictureUrl, cvLink: cvUrl };
+
       const res = await fetch("http://localhost:5000/api/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           ...(token && { Authorization: `Bearer ${token}` }),
         },
-        body: JSON.stringify(profile),
+        body: JSON.stringify(payload),
       });
+
       const data = await res.json();
       if (res.ok) {
         setProfile({ ...emptyProfile, ...data });
@@ -98,101 +143,51 @@ export default function ProfileAdmin() {
 
   return (
     <div style={{ maxWidth: 700, margin: "0 auto", padding: 16 }}>
+        <div style={{ marginTop: 16 }}>
+        <button onClick={handleLogout}>Se déconnecter</button>
+      </div>
       <h2>Profil</h2>
-
+        
       {message && <div style={{ color: "green", marginBottom: 8 }}>{message}</div>}
       {error && <div style={{ color: "red", marginBottom: 8 }}>{error}</div>}
 
       <div style={{ display: "grid", gap: 8 }}>
         <label>
           Prénom
-          <input
-            name="firstName"
-            value={profile.firstName}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="Prénom"
-          />
+          <input name="firstName" value={profile.firstName} onChange={handleChange} disabled={role !== "admin"} />
         </label>
 
         <label>
           Nom
-          <input
-            name="lastName"
-            value={profile.lastName}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="Nom"
-          />
+          <input name="lastName" value={profile.lastName} onChange={handleChange} disabled={role !== "admin"} />
         </label>
 
         <label>
-          Date de naissance
+          Image Profil
           <input
-            type="date"
-            name="birthDate"
-            value={profile.birthDate ? profile.birthDate.slice(0, 10) : ""}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfile((p) => ({ ...p, picture: e.target.files[0] }))}
             disabled={role !== "admin"}
           />
         </label>
+        {profile.picture && typeof profile.picture === "string" && (
+          <img src={`http://localhost:5000${profile.picture}`} alt="Profil" width={230} height={330} />
+        )}
+
+        <label> Date de naissance <input type="date" name="birthDate" value={profile.birthDate ? profile.birthDate.slice(0, 10) : ""} onChange={handleChange} disabled={role !== "admin"} /> </label> 
+        <label> Téléphone <input name="phoneNumber" value={profile.phoneNumber} onChange={handleChange} disabled={role !== "admin"} placeholder="Numéro de téléphone" /> </label>
+         <label> Email <input type="email" name="email" value={profile.email} onChange={handleChange} disabled={role !== "admin"} placeholder="Email" /> </label>
 
         <label>
-          Téléphone
-          <input
-            name="phoneNumber"
-            value={profile.phoneNumber}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="Numéro de téléphone"
-          />
+          CV
+          <input type="file" onChange={(e) => setProfile((p) => ({ ...p, cvLink: e.target.files[0] }))} disabled={role !== "admin"} />
         </label>
-
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={profile.email}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="Email"
-          />
-        </label>
-
-        <label>
-          CV (URL)
-          <input
-            name="cvLink"
-            value={profile.cvLink}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="Lien vers le CV"
-          />
-        </label>
-
-        <label>
-          Description
-          <textarea
-            name="profileDescription"
-            value={profile.profileDescription}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            rows={5}
-            placeholder="Description du profil"
-          />
-        </label>
-
-        <label>
-          Image (URL)
-          <input
-            name="picture"
-            value={profile.picture}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="https://..."
-          />
-        </label>
+        {profile.cvLink && typeof profile.cvLink === "string" && (
+          <a href={`http://localhost:5000${profile.cvLink}`} target="_blank" rel="noreferrer">
+            Voir CV
+          </a>
+        )}
 
         <fieldset style={{ border: "1px solid #eee", padding: 8 }}>
           <legend>Compétences</legend>
@@ -200,19 +195,12 @@ export default function ProfileAdmin() {
             {profile.skills.map((s, i) => (
               <li key={i}>
                 {s.name} ({s.level}){" "}
-                {role === "admin" && (
-                  <button type="button" onClick={() => handleRemoveSkill(i)}>
-                    Supprimer
-                  </button>
-                )}
+                {s.imageUrl && <img src={`http://localhost:5000${s.imageUrl}`} alt={s.name} width={80} />} 
+                {role === "admin" && <button type="button" onClick={() => handleRemoveSkill(i)}>Supprimer</button>}
               </li>
             ))}
           </ul>
-          {role === "admin" && (
-            <button type="button" onClick={() => setShowSkillModal(true)}>
-              Ajouter une compétence
-            </button>
-          )}
+          {role === "admin" && <button type="button" onClick={() => setShowSkillModal(true)}>Ajouter une compétence</button>}
         </fieldset>
 
         {showSkillModal && (
@@ -252,6 +240,10 @@ export default function ProfileAdmin() {
                   ))}
                 </select>
               </label>
+              <label>
+                Image
+                <input type="file" accept="image/*" onChange={(e) => setNewSkill((s) => ({ ...s, imageFile: e.target.files[0] }))} />
+              </label>
               <div style={{ marginTop: 8 }}>
                 <button onClick={handleAddSkill}>Ajouter</button>{" "}
                 <button onClick={() => setShowSkillModal(false)}>Annuler</button>
@@ -259,36 +251,27 @@ export default function ProfileAdmin() {
             </div>
           </div>
         )}
-
-        <label>
-          GitHub
-          <input
-            name="githubLink"
-            value={profile.githubLink}
+         <label>
+          Description
+            <textarea
+            name="profileDescription"
+            placeholder="Description"
+            value={profile.profileDescription}
             onChange={handleChange}
             disabled={role !== "admin"}
-            placeholder="https://github.com/..."
-          />
+            />
+        </label>
+        <label>
+          GitHub
+          <input name="githubLink" value={profile.githubLink} onChange={handleChange} disabled={role !== "admin"} />
         </label>
 
         <label>
           LinkedIn
-          <input
-            name="linkedinLink"
-            value={profile.linkedinLink}
-            onChange={handleChange}
-            disabled={role !== "admin"}
-            placeholder="https://linkedin.com/..."
-          />
+          <input name="linkedinLink" value={profile.linkedinLink} onChange={handleChange} disabled={role !== "admin"} />
         </label>
 
-        <div style={{ marginTop: 12 }}>
-          {role === "admin" ? (
-            <button onClick={handleSave}>Enregistrer</button>
-          ) : (
-            <p style={{ color: "#666" }}>Vous n'avez pas les droits pour modifier ce profil.</p>
-          )}
-        </div>
+        {role === "admin" && <button onClick={handleSave}>Enregistrer</button>}
       </div>
     </div>
   );

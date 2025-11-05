@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import path from "path";
 
 // Import routes
 import userRoutes from "./routes/userRoutes.js";
@@ -8,6 +9,7 @@ import projectRoutes from "./routes/projectRoutes.js";
 import blogPostRoutes from "./routes/blogRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 
 const app = express();
@@ -22,7 +24,8 @@ mongoose.connect(mongoURI)
 // Middleware
 app.use(cors());
 app.use(express.json());
-
+// Servir le dossier uploads
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -30,7 +33,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/blogposts", blogPostRoutes);
 app.use("/api/profile",profileRoutes);
-
+app.use("/api/upload", uploadRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend API is running fine!");
