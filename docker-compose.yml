@@ -22,18 +22,15 @@ services:
   
 
   frontend:
-    build: ./frontend
-    container_name: frontend
-    restart: always
-    ports:
-      - "3000:3000"
+    build: ./frontend  # chemin vers ton projet Vite
     volumes:
-      - ./frontend:/app            # Monte ton code local dans le conteneur
-      - /app/node_modules          # Monte node_modules séparément pour éviter de les écraser
+      - ./frontend:/app
+      - /app/node_modules  # pour éviter d'écraser node_modules
+    ports:
+      - "5173:5173"
     environment:
-      - CHOKIDAR_USEPOLLING=true   # Important sur Windows / WSL
-    depends_on:
-      - backend
+      - CHOKIDAR_USEPOLLING=true  # pour hot-reload sous Docker
+    command: npm run dev
 
 
 volumes:
