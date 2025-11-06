@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 
 const ProfileSchema = new mongoose.Schema({
     lastName: { type: String },
@@ -12,9 +11,8 @@ const ProfileSchema = new mongoose.Schema({
     cvLink: { type: String },                        // URL vers le CV
     skills: [
         {
-            name: { type: String },
-            level: { type: String, enum: ["low", "medium", "experienced", "expert"], default: "low" },
-            imageUrl: { type: String } // URL ou chemin du fichier image
+            relatedSkills: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill' },
+            level: { type: String, enum: ["low", "medium", "experienced", "expert"], default: "low" }
         }
     ],
     githubLink: { type: String },

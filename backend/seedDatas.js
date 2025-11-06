@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import { seedUsers } from "./seeds/seedUser.js";
 import { seedProjects } from "./seeds/seedProjects.js";
 import { seedBlogPosts } from "./seeds/seedBlogPost.js";
+import { seedSkills } from "./seeds/seedSkills.js";
+import { seedProfile } from "./seeds/seedProfile.js";
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ const seedAll = async () => {
     await seedUsers();
     await seedProjects();
     await seedBlogPosts();
+    await seedSkills();
+    await seedProfile();
 
     console.log("✅ All seeds completed.");
     process.exit(0);

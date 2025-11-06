@@ -10,7 +10,7 @@ import blogPostRoutes from "./routes/blogRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-
+import skillsRoutes from "./routes/skillsRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -34,6 +34,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/blogposts", blogPostRoutes);
 app.use("/api/profile",profileRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/skills",skillsRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend API is running fine!");
